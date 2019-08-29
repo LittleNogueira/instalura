@@ -41,7 +41,7 @@ export default class Timeline extends Component {
     }
 
     like(fotoId) {
-      this.props.store.like(fotoId);
+      this.props.store.dispatch(TimelineApi.like(fotoId));
     }
 
     comenta(fotoId,textoComentario) {
@@ -51,15 +51,14 @@ export default class Timeline extends Component {
     render(){
         return (
         <div className="fotos container">
-        <ReactCSSTransitionGroup
-          transitionName="timeline"
-          transitionEnterTimeout={500}
-          transitionLeaveTimeout={300}>
-            {
-              this.state.fotos.map(foto => <FotoItem key={foto.id} foto={foto} like={this.like.bind(this)} comenta={this.comenta.bind(this)}/>)
-            }               
-        </ReactCSSTransitionGroup>        
- 
+          <ReactCSSTransitionGroup
+            transitionName="timeline"
+            transitionEnterTimeout={500}
+            transitionLeaveTimeout={300}>
+              {
+                this.state.fotos.map(foto => <FotoItem key={foto.id} foto={foto} like={this.like.bind(this)} comenta={this.comenta.bind(this)}/>)
+              }               
+          </ReactCSSTransitionGroup>        
         </div>            
         );
     }
