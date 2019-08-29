@@ -3,19 +3,9 @@ import Header from './componentes/Header';
 import Timeline from './componentes/Timeline';
 import {createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
-
-const timeline = (state=[],action) => {
-
-  if(action.type === 'LISTAGEM'){
-    return action.fotos;
-  }
-
-  return state;
-
-}
+import timeline from './reducers/timeline';
 
 const store = createStore(timeline, applyMiddleware(thunk));
-
 
 class App extends Component {
   render() {    

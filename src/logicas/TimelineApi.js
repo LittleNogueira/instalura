@@ -12,28 +12,28 @@ export default class TimelineApi {
       }              
     }
 
-    comenta(fotoId,textoComentario) {
-      const requestInfo = {
-        method:'POST',
-        body:JSON.stringify({texto:textoComentario}),
-        headers: new Headers({
-          'Content-type':'application/json'
-        })
-      };
-
-      fetch(`https://instalura-api.herokuapp.com/api/fotos/${fotoId}/comment?X-AUTH-TOKEN=${localStorage.getItem('auth-token')}`,requestInfo)
-        .then(response => {
-          if(response.ok){
-            return response.json();
-          } else {
-            throw new Error("não foi possível comentar");
-          }
-        })
-        .then(novoComentario => {
-            const fotoAchada = this.fotos.find(foto => foto.id === fotoId);        
-            fotoAchada.comentarios.push(novoComentario);
-            Pubsub.publish('timeline',this.fotos);
-        });      
+    static comenta(fotoId,textoComentario) {
+      return dispatch => {
+        const requestInfo = {
+          method:'POST',
+          body:JSON.stringify({texto:textoComentario}),
+          headers: new Headers({
+            'Content-type':'application/json'
+          })
+        };
+  
+        fetch(`https://instalura-api.herokuapp.com/api/fotos/${fotoId}/comment?X-AUTH-TOKEN=${localStorage.getItem('auth-token')}`,requestInfo)
+          .then(response => {
+            if(response.ok){
+              return response.json();
+            } else {
+              throw new Error("não foi possível comentar");
+            }
+          })
+          .then(novoComentario => {
+            dispatch({type:'COMENTARIO',novoComentario,fotoId}); 
+          }); 
+      }     
     }    
 
     like(fotoId){
